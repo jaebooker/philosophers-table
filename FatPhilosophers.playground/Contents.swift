@@ -1,18 +1,18 @@
 import UIKit
 
-let philsophers = ["Decartes", "Sacrates", "Confucious", "Kant", "Nietzsche"]
-let forks = [false,false,false,false,false]
-
+let philsophers: [String] = ["Decartes", "Sacrates", "Confucious", "Kant", "Nietzsche"]
+let forks: [Bool] = [false,false,false,false,false]
+var forkTaken: [Int] = [-1]
 func eat(philsopher: Int) -> Bool {
     if philsopher == 4 {
-        if (forks[philsopher] == false) && (forks[0] == false) {
+        if (((forks[philsopher] == false) && (forks[0] == false)) && ((forkTaken[0] == philsopher) || ((forkTaken[0] != philsopher) && (forkTaken[0] != 0)))) {
             forks[philsopher] == true
             forks[0] == true
             print("\(philsophers[philsopher]) is stuffing his face, getting sauce in his mustache")
             return true
         }
     } else {
-        if (forks[philsopher] == false) && (forks[philsopher+1] == false) {
+        if (((forks[philsopher] == false) && (forks[philsopher+1] == false)) && ((forkTaken[0] == philsopher) || ((forkTaken[0] != philsopher) && (forkTaken[0] != philsopher+1)))) {
             forks[philsopher] == true
             forks[philsopher+1] == true
             print("\(philsophers[philsopher]) is eating")
@@ -21,27 +21,26 @@ func eat(philsopher: Int) -> Bool {
     }
     return false
 }
-func readyToEat(philsopher: Int) -> Int {
+func readyToEat(philsopher: Int) {
     if philsopher == 4 {
         if forks[philsopher] == false {
+            forkTaken[0] = philsopher
             print("\(philsophers[philsopher]) has taken a fork, remarking how waiting to eat is a failure of Christian morals")
-            return philsopher
         }
         if forks[0] == false {
+            forkTaken[0] = philsopher
             print("\(philsophers[philsopher]) has taken a fork, remarking that what does not eat us, we eat, and it makes us stronger")
-            return 0
         }
     } else {
         if forks[philsopher] == false {
+            forkTaken[0] = philsopher
             print("\(philsophers[philsopher]) has taken a fork")
-            return philsopher
         }
         if forks[philsopher+1] == false {
+            forkTaken[0] = philsopher
             print("\(philsophers[philsopher]) has taken a fork")
-            return philsopher+1
         }
     }
-    return -1
 }
 func think(philsopher: Int) {
     if philsopher == 4 {
@@ -52,5 +51,20 @@ func think(philsopher: Int) {
         forks[philsopher] == false
         forks[philsopher+1] == false
         print("\(philsophers[philsopher]) leans back, content, his belly full")
+    }
+}
+let tableOperation = BlockOperation()
+for philosoph in 0...philsophers.count {
+    tableOperation.addExecutionBlock {
+        var eaten = false
+        while eaten == false {
+            if eat(philsopher: philosoph) {
+                sleep(2)
+                eaten = true
+            } else {
+                readyToEat(philsopher: philosoph)
+            }
+        }
+        think(philsopher: philosoph)
     }
 }
