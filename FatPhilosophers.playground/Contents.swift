@@ -1,5 +1,5 @@
 import UIKit
-
+print("is playground asleep again?")
 let philsophers: [String] = ["Decartes", "Sacrates", "Confucious", "Kant", "Nietzsche"]
 let forks: [Bool] = [false,false,false,false,false]
 var forkTaken: [Int] = [-1]
@@ -68,3 +68,9 @@ for philosoph in 0...philsophers.count {
         think(philsopher: philosoph)
     }
 }
+tableOperation.completionBlock = {
+    print("All philosophers are done eating and are very fat")
+}
+
+let operationQueue = OperationQueue()
+operationQueue.addOperation(tableOperation)
